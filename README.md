@@ -1,2 +1,2 @@
-# Fred Co Retail Manager
+# FredCo Retail Manager
 A retail management system built by Fred Co Enterprise Solutions
