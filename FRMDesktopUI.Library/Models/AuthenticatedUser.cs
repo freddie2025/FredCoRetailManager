@@ -1,4 +1,4 @@
-﻿namespace FRMDesktopUI.Models
+﻿namespace FRMDesktopUI.Library.Models
 {
 	public class AuthenticatedUser
 	{

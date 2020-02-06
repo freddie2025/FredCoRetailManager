@@ -1,4 +1,4 @@
-﻿using FRMDesktopUI.Models;
+﻿using FRMDesktopUI.Library.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -6,15 +6,17 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace FRMDesktopUI.Helpers
+namespace FRMDesktopUI.Library.API
 {
 	public class APIHelper : IAPIHelper
 	{
 		private HttpClient apiClient;
+		private ILoggedInUserModel _loggedInUser;
 
-		public APIHelper()
+		public APIHelper(ILoggedInUserModel loggedInUser)
 		{
 			InitializeClient();
+			_loggedInUser = loggedInUser;
 		}
 
 		private void InitializeClient()
@@ -42,6 +44,32 @@ namespace FRMDesktopUI.Helpers
 				{
 					var result = await respsonse.Content.ReadAsAsync<AuthenticatedUser>();
 					return result;
+				}
+				else
+				{
+					throw new Exception(respsonse.ReasonPhrase);
+				}
+			}
+		}
+
+		public async Task GetLoggedInUserInfo(string token)
+		{
+			apiClient.DefaultRequestHeaders.Clear();
+			apiClient.DefaultRequestHeaders.Accept.Clear();
+			apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+			apiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer { token }");
+
+			using (HttpResponseMessage respsonse = await apiClient.GetAsync("/api/User"))
+			{
+				if (respsonse.IsSuccessStatusCode)
+				{
+					var result = await respsonse.Content.ReadAsAsync<LoggedInUserModel>();
+					_loggedInUser.CreatedDate = result.CreatedDate;
+					_loggedInUser.EmailAddress = result.EmailAddress;
+					_loggedInUser.FirstName = result.FirstName;
+					_loggedInUser.Id = result.Id;
+					_loggedInUser.LastName = result.LastName;
+					_loggedInUser.Token = token;
 				}
 				else
 				{
