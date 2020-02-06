@@ -9,6 +9,8 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "FRMData", "FRMData\FRMData.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FRMDesktopUI", "FRMDesktopUI\FRMDesktopUI.csproj", "{2877214E-AA74-41C3-9720-CE61C15FCB0F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FRMDataManager.Library", "FRMDataManager.Library\FRMDataManager.Library.csproj", "{DBD04B73-E9DD-4020-92C2-AF0D4EE777C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{2877214E-AA74-41C3-9720-CE61C15FCB0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2877214E-AA74-41C3-9720-CE61C15FCB0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2877214E-AA74-41C3-9720-CE61C15FCB0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBD04B73-E9DD-4020-92C2-AF0D4EE777C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBD04B73-E9DD-4020-92C2-AF0D4EE777C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBD04B73-E9DD-4020-92C2-AF0D4EE777C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBD04B73-E9DD-4020-92C2-AF0D4EE777C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
