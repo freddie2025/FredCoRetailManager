@@ -1,9 +1,11 @@
 ﻿using Caliburn.Micro;
+using FRMDesktopUI.Helpers;
 using FRMDesktopUI.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace FRMDesktopUI
 {
@@ -14,6 +16,11 @@ namespace FRMDesktopUI
 		public Bootstrapper()
 		{
 			Initialize();
+
+			ConventionManager.AddElementConvention<PasswordBox>(
+				PasswordBoxHelper.BoundPasswordProperty,
+				"Password",
+				"PasswordChanged");
 		}
 
 		protected override void Configure()
