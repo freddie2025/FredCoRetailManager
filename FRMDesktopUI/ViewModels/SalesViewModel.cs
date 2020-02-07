@@ -7,7 +7,7 @@ namespace FRMDesktopUI.ViewModels
 	{
 		private BindingList<string> _products;
 		private BindingList<string> _cart;
-		private string _itemQuantity;
+		private int _itemQuantity;
 
 		public BindingList<string> Products
 		{
@@ -28,7 +28,7 @@ namespace FRMDesktopUI.ViewModels
 			}
 		}
 
-		public string ItemQuantity
+		public int ItemQuantity
 		{
 			get { return _itemQuantity; }
 			set 

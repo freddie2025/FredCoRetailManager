@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using FRMDesktopUI.EventModels;
 using FRMDesktopUI.Library.API;
 using System;
 using System.Threading.Tasks;
@@ -11,10 +12,12 @@ namespace FRMDesktopUI.ViewModels
 		private string _password;
 		private string _errorMessage;
 		private IAPIHelper _apiHelper;
+		private IEventAggregator _events;
 
-		public LoginViewModel(IAPIHelper apiHelper)
+		public LoginViewModel(IAPIHelper apiHelper, IEventAggregator events)
 		{
 			_apiHelper = apiHelper;
+			_events = events;
 		}
 
 		public string UserName
@@ -89,6 +92,8 @@ namespace FRMDesktopUI.ViewModels
 
 				// Capture more information about the user
 				await _apiHelper.GetLoggedInUserInfo(result.Access_Token);
+
+				_events.PublishOnUIThread(new LogOnEvent());
 			}
 			catch (Exception ex)
 			{
