@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using FRMDesktopUI.Library.API;
+using FRMDesktopUI.Library.Helpers;
 using FRMDesktopUI.Library.Models;
 using System;
 using System.ComponentModel;
@@ -15,10 +16,12 @@ namespace FRMDesktopUI.ViewModels
 		private ProductModel _selectedProduct;
 		private int _itemQuantity = 1;
 		private IProductEndpoint _productEndpoint;
+		private IConfigHelper _configHelper;
 
-		public SalesViewModel (IProductEndpoint productEndpoint)
+		public SalesViewModel (IProductEndpoint productEndpoint, IConfigHelper configHelper)
 		{
 			_productEndpoint = productEndpoint;
+			_configHelper = configHelper;
 		}
 
 		protected override async void OnViewLoaded(object view)
@@ -78,32 +81,52 @@ namespace FRMDesktopUI.ViewModels
 		{
 			get 
 			{
-				decimal subTotal = 0;
-
-				foreach (var item in Cart)
-				{
-					subTotal += (item.Product.RetailPrice * item.QuantityInCart);
-				}
-
-				return subTotal.ToString("C");
+				return CalculateSubTotal().ToString("C");
 			}
+		}
+
+		private Decimal CalculateSubTotal()
+		{
+			decimal subTotal = 0;
+
+			foreach (var item in Cart)
+			{
+				subTotal += (item.Product.RetailPrice * item.QuantityInCart);
+			}
+
+			return subTotal;
 		}
 
 		public string Tax
 		{
 			get
 			{
-				// TODO - Replace with calculation
-				return "$0.00";
+				return CalculateTax().ToString("C");
 			}
+		}
+
+		private Decimal CalculateTax()
+		{
+			decimal taxTotal = 0;
+			decimal taxRate = _configHelper.GetTaxRate()/100;
+
+			foreach (var item in Cart)
+			{
+				if (item.Product.IsTaxable)
+				{
+					taxTotal += (item.Product.RetailPrice * item.QuantityInCart * taxRate);
+				}
+			}
+
+			return taxTotal;
 		}
 
 		public string Total
 		{
 			get
 			{
-				// TODO - Replace with calculation
-				return "$0.00";
+				decimal total = CalculateSubTotal() + CalculateTax();
+				return total.ToString("C");
 			}
 		}
 
@@ -147,6 +170,8 @@ namespace FRMDesktopUI.ViewModels
 			SelectedProduct.QuantityInStock -= ItemQuantity;
 			ItemQuantity = 1;
 			NotifyOfPropertyChange(() => SubTotal);
+			NotifyOfPropertyChange(() => Tax);
+			NotifyOfPropertyChange(() => Total);
 		}
 
 		public bool CanRemoveToCart
@@ -164,6 +189,8 @@ namespace FRMDesktopUI.ViewModels
 		public void RemoveFromCart()
 		{
 			NotifyOfPropertyChange(() => SubTotal);
+			NotifyOfPropertyChange(() => Tax);
+			NotifyOfPropertyChange(() => Total);
 		}
 
 		public bool CanCheckOut		
