@@ -1,8 +1,10 @@
-﻿using Caliburn.Micro;
+﻿using AutoMapper;
+using Caliburn.Micro;
 using FRMDesktopUI.Helpers;
 using FRMDesktopUI.Library.API;
 using FRMDesktopUI.Library.Helpers;
 using FRMDesktopUI.Library.Models;
+using FRMDesktopUI.Models;
 using FRMDesktopUI.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -26,8 +28,23 @@ namespace FRMDesktopUI
 				"PasswordChanged");
 		}
 
+		private IMapper ConfigureAutomapper()
+		{
+			var config = new MapperConfiguration(cfg =>
+			{
+				cfg.CreateMap<ProductModel, ProductDisplayModel>();
+				cfg.CreateMap<CartItemModel, CartItemDisplayModel>();
+			});
+
+			var output = config.CreateMapper();
+
+			return output;
+		}
+
 		protected override void Configure()
 		{
+			_container.Instance(ConfigureAutomapper());
+
 			_container.Instance(_container)
 				.PerRequest<IProductEndpoint, ProductEndpoint>()
 				.PerRequest<ISaleEndpoint, SaleEndpoint>();
