@@ -17,12 +17,13 @@ namespace FRMDesktopUI.ViewModels
 		private BindingList<ProductDisplayModel> _products;
 		private BindingList<CartItemDisplayModel> _cart = new BindingList<CartItemDisplayModel>();
 		private ProductDisplayModel _selectedProduct;
+		private CartItemDisplayModel _selectedCartItem;
 		private int _itemQuantity = 1;
 		private IProductEndpoint _productEndpoint;
 		private IConfigHelper _configHelper;
 		private ISaleEndpoint _saleEndpoint;
 		private IMapper _mapper;
-
+		
 		public SalesViewModel (IProductEndpoint productEndpoint, IConfigHelper configHelper, 
 			ISaleEndpoint saleEndpoint, IMapper mapper)
 		{
@@ -53,6 +54,17 @@ namespace FRMDesktopUI.ViewModels
 				_selectedProduct = value;
 				NotifyOfPropertyChange(() => SelectedProduct);
 				NotifyOfPropertyChange(() => CanAddToCart);
+			}
+		}
+
+		public CartItemDisplayModel SelectedCartItem
+		{
+			get { return _selectedCartItem; }
+			set
+			{
+				_selectedCartItem = value;
+				NotifyOfPropertyChange(() => SelectedCartItem);
+				NotifyOfPropertyChange(() => CanRemoveFromCart);
 			}
 		}
 
@@ -177,13 +189,17 @@ namespace FRMDesktopUI.ViewModels
 			NotifyOfPropertyChange(() => CanCheckOut);
 		}
 
-		public bool CanRemoveToCart
+		public bool CanRemoveFromCart
 		{
 			get
 			{
 				bool output = false;
 
 				// Make sure something is selected
+				if (SelectedCartItem != null && SelectedCartItem?.Product.QuantityInStock > 0)
+				{
+					output = true;
+				}
 
 				return output;
 			}
@@ -191,6 +207,17 @@ namespace FRMDesktopUI.ViewModels
 
 		public void RemoveFromCart()
 		{
+			SelectedCartItem.Product.QuantityInStock += 1;
+
+			if (SelectedCartItem.QuantityInCart > 1)
+			{
+				SelectedCartItem.QuantityInCart -= 1;
+			}
+			else
+			{
+				Cart.Remove(SelectedCartItem);
+			}
+
 			NotifyOfPropertyChange(() => SubTotal);
 			NotifyOfPropertyChange(() => Tax);
 			NotifyOfPropertyChange(() => Total);
