@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Configuration;
 
-namespace FRMDesktopUI.Library.Helpers
+namespace FRMDataManager.Library
 {
-	public class ConfigHelper : IConfigHelper
+	public class ConfigHelper
 	{
 		// TODO: Move this from config to the API
-		public decimal GetTaxRate()
+		public static decimal GetTaxRate()
 		{
 			string rateText = ConfigurationManager.AppSettings["taxRate"];
 

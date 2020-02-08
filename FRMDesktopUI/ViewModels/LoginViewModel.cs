@@ -8,8 +8,8 @@ namespace FRMDesktopUI.ViewModels
 {
 	public class LoginViewModel : Screen
 	{
-		private string _userName;
-		private string _password;
+		private string _userName = "fredjsam@live.co.uk";
+		private string _password = "Pwd12345.";
 		private string _errorMessage;
 		private IAPIHelper _apiHelper;
 		private IEventAggregator _events;
