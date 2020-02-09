@@ -26,7 +26,7 @@ namespace FRMDataManager.Library.DataAccess
 					Quantity = item.Quantity
 				};
 
-				// Get the infomration about this product
+				// Get the information about this product
 				var productInfo = products.GetProductById(item.ProductId);
 
 				if (productInfo == null)
@@ -74,7 +74,7 @@ namespace FRMDataManager.Library.DataAccess
 						sql.SaveDataInTransaction("[dbo].[spSaleDetail_Insert]", item);
 					}
 					
-					//sql.CommitTransaction();
+					sql.CommitTransaction();
 				}
 				catch
 				{
