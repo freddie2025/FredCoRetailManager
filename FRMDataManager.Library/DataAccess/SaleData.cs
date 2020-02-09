@@ -54,19 +54,33 @@ namespace FRMDataManager.Library.DataAccess
 
 			sale.Total = sale.SubTotal + sale.Tax;
 
-			// Save the sale model
-			SqlDataAccess sql = new SqlDataAccess();
-			sql.SaveData<SaleDBModel>("[dbo].[spSale_Insert]", sale, "FRMData");
-
-			// Get the ID from the sale model
-			sale.Id = sql.LoadData<int, dynamic>("[dbo].[spSale_Lookup]", new { sale.CashierId, sale.SaleDate }, "FRMData").FirstOrDefault();
-
-			// Finish filling in the sale detail models
-			foreach (var item in details)
+			using (SqlDataAccess sql = new SqlDataAccess())
 			{
-				item.SaleId = sale.Id;
-				// Save the sale detail models
-				sql.SaveData("[dbo].[spSaleDetail_Insert]", item, "FRMData");
+				sql.StartTransaction("FRMData");
+
+				try
+				{
+					// Save the sale model
+					sql.SaveDataInTransaction<SaleDBModel>("[dbo].[spSale_Insert]", sale);
+
+					// Get the ID from the sale model
+					sale.Id = sql.LoadDataInTransaction<int, dynamic>("[dbo].[spSale_Lookup]", new { sale.CashierId, sale.SaleDate }).FirstOrDefault();
+
+					// Finish filling in the sale detail models
+					foreach (var item in details)
+					{
+						item.SaleId = sale.Id;
+						// Save the sale detail models
+						sql.SaveDataInTransaction("[dbo].[spSaleDetail_Insert]", item);
+					}
+					
+					//sql.CommitTransaction();
+				}
+				catch
+				{
+					sql.RollbackTransaction();
+					throw;
+				}
 			}
 		}
 	}
