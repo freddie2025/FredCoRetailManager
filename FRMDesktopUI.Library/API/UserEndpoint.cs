@@ -6,22 +6,22 @@ using System.Threading.Tasks;
 
 namespace FRMDesktopUI.Library.API
 {
-	public class ProductEndpoint : IProductEndpoint
+	public class UserEndpoint : IUserEndpoint
 	{
 		private IAPIHelper _apiHelper;
 
-		public ProductEndpoint(IAPIHelper apiHelper)
+		public UserEndpoint(IAPIHelper apiHelper)
 		{
 			_apiHelper = apiHelper;
 		}
 
-		public async Task<List<ProductModel>> GetAll()
+		public async Task<List<UserModel>> GetAll()
 		{
-			using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/Product"))
+			using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/User/Admin/GetAllUsers"))
 			{
 				if (response.IsSuccessStatusCode)
 				{
-					var result = await response.Content.ReadAsAsync<List<ProductModel>>();
+					var result = await response.Content.ReadAsAsync<List<UserModel>>();
 					return result;
 				}
 				else
