@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using FRMDesktopUI.EventModels;
+using FRMDesktopUI.Library.API;
 using FRMDesktopUI.Library.Models;
 
 namespace FRMDesktopUI.ViewModels
@@ -8,13 +9,15 @@ namespace FRMDesktopUI.ViewModels
 	{
 		private SalesViewModel _salesVM;
 		private ILoggedInUserModel _user;
+		private IAPIHelper _apiHelper;
 		private IEventAggregator _events;
 
-		public ShellViewModel(IEventAggregator events, SalesViewModel salesVM, ILoggedInUserModel user)
+		public ShellViewModel(IEventAggregator events, SalesViewModel salesVM, ILoggedInUserModel user, IAPIHelper apiHelper)
 		{
 			_events = events;
 			_salesVM = salesVM;
 			_user = user;
+			_apiHelper = apiHelper;
 
 			_events.Subscribe(this);
 
@@ -28,7 +31,8 @@ namespace FRMDesktopUI.ViewModels
 
 		public void LogOut()
 		{
-			_user.LogOffUser();
+			_user.ResetUserModel();
+			_apiHelper.LogOffUser();
 			ActivateItem(IoC.Get<LoginViewModel>());
 			NotifyOfPropertyChange(() => IsLoggedIn);
 		}

@@ -60,6 +60,11 @@ namespace FRMDesktopUI.Library.API
 			}
 		}
 
+		public void LogOffUser()
+		{
+			_apiClient.DefaultRequestHeaders.Clear();
+		}
+
 		public async Task GetLoggedInUserInfo(string token)
 		{
 			_apiClient.DefaultRequestHeaders.Clear();
