@@ -5,7 +5,7 @@ using System.Web.Http;
 
 namespace FRMDataManager.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Cashier,Admin")]
     public class ProductController : ApiController
     {
         public List<ProductModel> Get()
