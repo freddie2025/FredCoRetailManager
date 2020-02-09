@@ -12,7 +12,7 @@ namespace FRMDataManager.Library.DataAccess
 
 			var p = new { Id = Id };
 
-			var output = sql.LoadData<UserModel, dynamic>("[dbo].[spUserLookup]", p, "FRMData");
+			var output = sql.LoadData<UserModel, dynamic>("[dbo].[spUser_Lookup]", p, "FRMData");
 
 			return output;
 		}
