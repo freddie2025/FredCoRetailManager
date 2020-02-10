@@ -2,6 +2,7 @@
 using FRMDesktopUI.EventModels;
 using FRMDesktopUI.Library.API;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FRMDesktopUI.ViewModels
@@ -93,7 +94,7 @@ namespace FRMDesktopUI.ViewModels
 				// Capture more information about the user
 				await _apiHelper.GetLoggedInUserInfo(result.Access_Token);
 
-				_events.PublishOnUIThread(new LogOnEvent());
+				await _events.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
 			}
 			catch (Exception ex)
 			{

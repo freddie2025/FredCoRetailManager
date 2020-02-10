@@ -18,7 +18,7 @@ namespace FRMDesktopUI.ViewModels
 
 		public void Close()
 		{
-			TryClose();
+			TryCloseAsync();
 		}
 	}
 }
