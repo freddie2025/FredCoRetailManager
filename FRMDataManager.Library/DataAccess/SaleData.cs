@@ -1,19 +1,20 @@
 ﻿using FRMDataManager.Library.Internal.DataAccess;
 using FRMDataManager.Library.Models;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace FRMDataManager.Library.DataAccess
 {
-	public class SaleData
+	public class SaleData : ISaleData
 	{
-		private readonly IConfiguration _config;
+		private readonly IProductData _productData;
+		private readonly ISqlDataAccess _sql;
 
-		public SaleData(IConfiguration config)
+		public SaleData(IProductData productData, ISqlDataAccess sql)
 		{
-			_config = config;
+			_productData = productData;
+			_sql = sql;
 		}
 
 		public void SaveSale(SaleModel saleInfo, string cashierId)
@@ -21,8 +22,7 @@ namespace FRMDataManager.Library.DataAccess
 			// TODO: Make this SOLID/Dry/Better
 			// Start filling in the sale detail models we will save to the database
 			List<SaleDetailDBModel> details = new List<SaleDetailDBModel>();
-			ProductData products = new ProductData(_config);
-			var taxRate = ConfigHelper.GetTaxRate()/100;
+			var taxRate = ConfigHelper.GetTaxRate() / 100;
 
 			foreach (var item in saleInfo.SaleDetails)
 			{
@@ -33,7 +33,7 @@ namespace FRMDataManager.Library.DataAccess
 				};
 
 				// Get the information about this product
-				var productInfo = products.GetProductById(item.ProductId);
+				var productInfo = _productData.GetProductById(item.ProductId);
 
 				if (productInfo == null)
 				{
@@ -52,7 +52,7 @@ namespace FRMDataManager.Library.DataAccess
 
 			// Create the sale model
 			SaleDBModel sale = new SaleDBModel
-			{ 
+			{
 				SubTotal = details.Sum(x => x.PurchasePrice),
 				Tax = details.Sum(x => x.Tax),
 				CashierId = cashierId
@@ -60,41 +60,36 @@ namespace FRMDataManager.Library.DataAccess
 
 			sale.Total = sale.SubTotal + sale.Tax;
 
-			using (SqlDataAccess sql = new SqlDataAccess(_config))
+			_sql.StartTransaction("FRMData");
+
+			try
 			{
-				sql.StartTransaction("FRMData");
+				// Save the sale model
+				_sql.SaveDataInTransaction<SaleDBModel>("[dbo].[spSale_Insert]", sale);
 
-				try
+				// Get the ID from the sale model
+				sale.Id = _sql.LoadDataInTransaction<int, dynamic>("[dbo].[spSale_Lookup]", new { sale.CashierId, sale.SaleDate }).FirstOrDefault();
+
+				// Finish filling in the sale detail models
+				foreach (var item in details)
 				{
-					// Save the sale model
-					sql.SaveDataInTransaction<SaleDBModel>("[dbo].[spSale_Insert]", sale);
-
-					// Get the ID from the sale model
-					sale.Id = sql.LoadDataInTransaction<int, dynamic>("[dbo].[spSale_Lookup]", new { sale.CashierId, sale.SaleDate }).FirstOrDefault();
-
-					// Finish filling in the sale detail models
-					foreach (var item in details)
-					{
-						item.SaleId = sale.Id;
-						// Save the sale detail models
-						sql.SaveDataInTransaction("[dbo].[spSaleDetail_Insert]", item);
-					}
-					
-					sql.CommitTransaction();
+					item.SaleId = sale.Id;
+					// Save the sale detail models
+					_sql.SaveDataInTransaction("[dbo].[spSaleDetail_Insert]", item);
 				}
-				catch
-				{
-					sql.RollbackTransaction();
-					throw;
-				}
+
+				_sql.CommitTransaction();
+			}
+			catch
+			{
+				_sql.RollbackTransaction();
+				throw;
 			}
 		}
 
 		public List<SaleReportModel> GetSaleReport()
 		{
-			SqlDataAccess sql = new SqlDataAccess(_config);
-
-			var output = sql.LoadData<SaleReportModel, dynamic>("[dbo].[spSale_SaleReport]", new { }, "FRMData");
+			var output = _sql.LoadData<SaleReportModel, dynamic>("[dbo].[spSale_SaleReport]", new { }, "FRMData");
 
 			return output;
 		}

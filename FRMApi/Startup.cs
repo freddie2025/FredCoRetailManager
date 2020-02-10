@@ -1,4 +1,6 @@
 using FRMApi.Data;
+using FRMDataManager.Library.DataAccess;
+using FRMDataManager.Library.Internal.DataAccess;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -33,6 +35,14 @@ namespace FRMApi
 				.AddEntityFrameworkStores<ApplicationDbContext>();
 			services.AddControllersWithViews();
 			services.AddRazorPages();
+
+			// Personal Services
+			services.AddTransient<IInventoryData, InventoryData>();
+			services.AddTransient<IProductData, ProductData>();
+			services.AddTransient<ISaleData, SaleData>();
+			services.AddTransient<IUserData, UserData>();
+			services.AddTransient<ISqlDataAccess, SqlDataAccess>();
+
 			services.AddAuthentication(options =>
 			{
 				options.DefaultAuthenticateScheme = "JwtBearer";
