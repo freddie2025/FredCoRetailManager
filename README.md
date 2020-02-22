@@ -44,3 +44,10 @@ A retail management system built by Fred Co Enterprise Solutions
 [Back-End API Project Upgrade](https://www.youtube.com/watch?v=Xtt6mS0p2_c&list=PLLWMQd6PeGY0bEMxObA6dtYXuJOGfxSPx&index=34&t=0s)  
 [API Authentication in .NET Core](https://www.youtube.com/watch?v=Xtt6mS0p2_c&list=PLLWMQd6PeGY0bEMxObA6dtYXuJOGfxSPx&index=35&t=0s)  
 [Front-End WPF Project Upgrade](https://www.youtube.com/watch?v=Xtt6mS0p2_c&list=PLLWMQd6PeGY0bEMxObA6dtYXuJOGfxSPx&index=36&t=0s)  
+## Planning Phase 2
+[Special Announcement Upgrading .NET Core 3.0](https://www.youtube.com/watch?v=Xtt6mS0p2_c&list=PLLWMQd6PeGY0bEMxObA6dtYXuJOGfxSPx&index=37&t=0s)  
+[Planning Phase 2](https://www.youtube.com/watch?v=Xtt6mS0p2_c&list=PLLWMQd6PeGY0bEMxObA6dtYXuJOGfxSPx&index=38&t=0s)  
+[Implementing .NET Core Features](https://www.youtube.com/watch?v=Xtt6mS0p2_c&list=PLLWMQd6PeGY0bEMxObA6dtYXuJOGfxSPx&index=39&t=0s)  
+## Upgrading to Azure DevOps
+[Using Azure DevOps Boards](https://www.youtube.com/watch?v=Xtt6mS0p2_c&list=PLLWMQd6PeGY0bEMxObA6dtYXuJOGfxSPx&index=40&t=0s)  
+[Moving From GitHub to Azure DevOps](https://www.youtube.com/watch?v=Xtt6mS0p2_c&list=PLLWMQd6PeGY0bEMxObA6dtYXuJOGfxSPx&index=41&t=0s)  
