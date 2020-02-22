@@ -1,5 +1,7 @@
 # FredCo Retail Manager
-A retail management system built by Fred Co Enterprise Solutions
+A retail management system built by Fred Co Enterprise Solutions  
+
+[![Board Status](https://dev.azure.com/FredJames/0e7e1a14-c5e9-418d-b20c-2de10a52f981/e6a9971d-fabb-497c-9524-8bd87736075d/_apis/work/boardbadge/3c38b13e-1bf6-448c-bf62-7ea0e708c7fa)](https://dev.azure.com/FredJames/0e7e1a14-c5e9-418d-b20c-2de10a52f981/_boards/board/t/e6a9971d-fabb-497c-9524-8bd87736075d/Microsoft.RequirementCategory/)  
 
 ## Course Introduction
 [Course Introduction](https://www.youtube.com/watch?v=Xtt6mS0p2_c&list=PLLWMQd6PeGY0bEMxObA6dtYXuJOGfxSPx&index=2&t=0s)  
